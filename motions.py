@@ -185,7 +185,7 @@ def shield_bottomright(angle):
     return angle - 0x6000
 
 
-# first-person movement
+# c-up movement
 
 def c_up_right(angle):
     return angle - 0x03c0
@@ -195,6 +195,8 @@ def c_up_left(angle):
     return angle + 0x03c0
 
 
+# deku movement
+
 def deku_bubble_right(angle):
     return angle - 0x379
 
@@ -202,8 +204,6 @@ def deku_bubble_right(angle):
 def deku_bubble_left(angle):
     return angle + 0x377
 
-
-# transformation mask movement
 
 def deku_spin(angle):
     return angle -0x01e0

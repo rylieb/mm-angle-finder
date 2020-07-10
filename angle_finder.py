@@ -33,7 +33,6 @@ sys.setrecursionlimit(5000) # basic searches can get a lil' wild
 COST_FLEX = Decimal(3.0)
 COST_TABLE = {}
 
-
 MOVEMENT_OPTIONS = {
     "basic": [
         "ess left",
