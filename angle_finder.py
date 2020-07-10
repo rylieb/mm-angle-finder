@@ -661,9 +661,13 @@ if __name__ == "__main__":
 
     # DESIRED ANGLES - Uncomment only one.
 
-    # Stale reference drop angle (at most 12 words prior to Link + 0xAD4)
+    # Stale reference drop angles (at most 12 words prior to Link + 0xAD4)
+
+    #JP 1.0
     #for angle in list(range(0x0a44,0x0a74+0x1,0x4)):
 
+    #JP 1.1
+    for angle in list(range(0x0d04,0x0d34+0x1,0x4)):
 
 
     # JP 1.0 TARGETING ANGLES
@@ -691,7 +695,7 @@ if __name__ == "__main__":
     #for angle in [0x2D53]:
 
     # All targeting angles
-    for angle in [0xBDCF,0x1C07,0x2D53]:
+    #for angle in [0xBDCF,0x1C07,0x2D53]:
 
 
     # FACING ANGLES (same for both)
