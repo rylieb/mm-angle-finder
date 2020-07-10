@@ -30,7 +30,7 @@ import motions
 getcontext().prec = 4 # Decimal to 4 places
 sys.setrecursionlimit(5000) # basic searches can get a lil' wild
 
-COST_FLEX = Decimal(3.0)
+COST_FLEX = Decimal(8.0) #Not sure why but setting this higher yields more valid results and less fake ones
 COST_TABLE = {}
 
 MOVEMENT_OPTIONS = {
@@ -102,12 +102,25 @@ BASIC_COSTS = {
     "deku spin": Decimal(0.75),
 }
 COST_CHAINS = {
+    # Consecutive identical movements remove the overhead, so each only costs a frame (0.05s).
     ("ess left", "ess left"): Decimal(0.05),
     ("ess right", "ess right"): Decimal(0.05),
     ("c-up left", "c-up left"): Decimal(0.05),
     ("c-up right", "c-up right"): Decimal(0.05),
     ("deku bubble left", "deku bubble left"): Decimal(0.05),
     ("deku bubble right", "deku bubble right"): Decimal(0.05),
+
+    # Don't ever consider changing directions for reversible movements.
+    ("ess left", "ess right"): Decimal(100),
+    ("ess right", "ess left"): Decimal(100),
+    ("c-up left", "c-up right"): Decimal(100),
+    ("c-up right", "c-up left"): Decimal(100),
+
+    # Don't consider any paths that have ess after a c-up to remove duplicates.
+    ("c-up left", "ess left"): Decimal(100),
+    ("c-up right", "ess right"): Decimal(100),
+    ("c-up left", "ess right"): Decimal(100),
+    ("c-up right", "ess left"): Decimal(100),    
 }
 
 
@@ -367,7 +380,7 @@ def print_path(angle, description, path):
         print(f"{motion['motion']:<{text_length}} to {motion['angle']}")
 
 
-def collect_paths(graph, angle, sample_size=20, number=10):
+def collect_paths(graph, angle, sample_size=sys.maxsize, number=10):
     """Sample 'sample_size' paths, returning the 'number' cheapest of those.
 
     Returns a list of
@@ -381,8 +394,8 @@ def collect_paths(graph, angle, sample_size=20, number=10):
     for angle, path in navigate_all(graph, angle):
         paths.append((cost_of_path(path), angle, path))
 
-        if len(paths) == sample_size:
-            break
+##        if len(paths) == sample_size:
+##            break
 
     paths.sort()
     return paths[:number]
@@ -668,7 +681,12 @@ if __name__ == "__main__":
     
     # Collect the 5 fastest sequences of the first 50 visited.  The fastest
     # sequence collected is at least tied as the fastest sequence overall.
-        paths.extend(collect_paths(graph, angle, sample_size=50, number=5))
+        paths.extend(collect_paths(graph, angle, sample_size=sys.maxsize, number=6))
+    # Results seem to be better with an unlimited sample_size, but everything after the 6th
+    # result is invalid with a COST_FLEX of 8. Any higher COST_FLEX increases processing time
+    # dramatically, so we have to limit the number of results to 6. It still seems to miss some
+    # good ones though sadly. I think it's breaking up c-ups when there's more than 2 of them.
+    # It seems to disproportionately dislike large numbers of c-up and small numbers of ess.
 
     paths.sort()
 
