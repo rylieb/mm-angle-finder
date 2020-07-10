@@ -185,6 +185,30 @@ def shield_bottomright(angle):
     return angle - 0x6000
 
 
+# first-person movement
+
+def c_up_right(angle):
+    return angle - 0x03c0
+
+
+def c_up_left(angle):
+    return angle + 0x03c0
+
+
+def deku_bubble_right(angle):
+    return angle - 0x379
+
+
+def deku_bubble_left(angle):
+    return angle + 0x377
+
+
+# transformation mask movement
+
+def deku_spin(angle):
+    return angle -0x01e0
+
+
 table = {
     "ess up": ess_up_adjust,
     "ess left": ess_left,
@@ -204,4 +228,9 @@ table = {
     "shield top-left": shield_topleft,
     "shield bottom-left": shield_bottomleft,
     "shield bottom-right": shield_bottomright,
+    "c-up right": c_up_right,
+    "c-up left": c_up_left,
+    "deku bubble right": deku_bubble_right,
+    "deku bubble left": deku_bubble_left,
+    "deku spin": deku_spin,
 }
