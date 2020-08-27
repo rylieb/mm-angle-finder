@@ -76,10 +76,6 @@ except:
             print(angle, file=cam)
 
 
-def ess_up_adjust(angle):
-    return CAMERA_SNAPS[angle]
-
-
 # basic movement options
 
 def ess_left(angle):
@@ -89,6 +85,11 @@ def ess_left(angle):
 def ess_right(angle):
     return angle - 0x0708
 
+
+# cardinal turns (gc/vc only)
+
+def ess_up_adjust(angle):
+    return CAMERA_SNAPS[angle]
 
 def turn_left(angle):
     angle = ess_up_adjust(angle)  # camera auto adjusts similar to ess up
@@ -109,80 +110,6 @@ def turn_180(angle):
     if not angle:
         return None
     return angle + 0x8000
-
-
-# no_carry movement options. these can be
-# executed when Link isn't holding anything
-
-def sidehop_sideroll_left(angle):
-    return angle + 0x1CD8
-
-
-def sidehop_sideroll_right(angle):
-    return angle - 0x1CD8
-
-
-def ess_down_sideroll(angle):
-    left = True
-    camera_angle = ess_up_adjust(angle)
-    # link always rolls right when the camera is auto snapping
-    if not camera_angle:
-        left = False
-    elif camera_angle >= angle:  # left / right depends on camera
-        left = False
-    return angle + 0x3A98 if left else angle - 0x3A98
-
-def backflip_sideroll(angle):
-    # forces a right roll even if ess down roll goes left
-    return angle - 0x3A98
-
-
-# sword-related movement
-
-def sword_spin_shield_cancel(angle):
-    return angle - 0x0CCD
-
-
-def biggoron_slash_shield_cancel(angle):
-    return angle + 0x1219
-
-
-def biggoron_spin_shield_cancel(angle):
-    return angle + 0x04F5
-
-
-def hammer_shield_cancel(angle):
-    return angle - 0x0F90
-
-
-# perfect corner shield turns (n64 only)
-
-def shield_topright(angle):
-    angle = ess_up_adjust(angle)
-    if not angle:
-        return None
-    return angle - 0x2000
-
-
-def shield_topleft(angle):
-    angle = ess_up_adjust(angle)
-    if not angle:
-        return None
-    return angle + 0x2000
-
-
-def shield_bottomleft(angle):
-    angle = ess_up_adjust(angle)
-    if not angle:
-        return None
-    return angle + 0x6000
-
-
-def shield_bottomright(angle):
-    angle = ess_up_adjust(angle)
-    if not angle:
-        return None
-    return angle - 0x6000
 
 
 # c-up movement
@@ -206,7 +133,126 @@ def deku_bubble_left(angle):
 
 
 def deku_spin(angle):
-    return angle -0x01e0
+    return angle - 0x01e0
+
+
+def mask_transition(angle): #jp n64 builds only (includes jp vc, but not jp gcn)
+    return turn_180(angle)
+
+
+#hold sidehops (all regions gcn and us/pal vc only)
+
+def mask_hold_sidehop_left(angle):
+    return angle + 0x4000
+
+def mask_hold_sidehop_right(angle):
+    return angle - 0x4000
+
+
+#4 frame sidehops (all regions gcn and us/pal vc only)
+
+def human_4_frame_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 1*0x12C
+
+def human_4_frame_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 1*0x12C
+
+def deku_4_frame_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 1*0x258
+
+def deku_4_frame_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 1*0x258
+
+def goron_4_frame_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 1*0xB4
+
+def goron_4_frame_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 1*0xB4
+
+
+#3 frame sidehops (all regions gcn and us/pal vc only)
+
+def human_3_frame_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 2*0x12C
+
+def human_3_frame_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 2*0x12C
+
+def deku_3_frame_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 2*0x258
+
+def deku_3_frame_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 2*0x258
+
+def goron_3_frame_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 2*0xB4
+
+def goron_3_frame_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 2*0xB4
+
+
+#2 frame sidehops (all regions gcn and us/pal vc only)
+
+def human_2_frame_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 3*0x12C
+
+def human_2_frame_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 3*0x12C
+
+def deku_2_frame_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 3*0x258
+
+def deku_2_frame_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 3*0x258
+
+def goron_2_frame_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 3*0xB4
+
+def goron_2_frame_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 3*0xB4
+
+
+#1 frame sidehops (all regions gcn and us/pal vc only)
+
+def human_1_frame_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 4*0x12C
+
+def human_1_frame_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 4*0x12C
+
+def deku_1_frame_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 4*0x258
+
+def deku_1_frame_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 4*0x258
+
+def goron_1_frame_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 4*0xB4
+
+def goron_1_frame_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 4*0xB4
+
+
+#tap sidehops (us/pal n64 builds, and all gcn builds only)
+
+def human_tap_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 5*0x12C
+
+def human_tap_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 5*0x12C
+
+def deku_tap_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 5*0x258
+
+def deku_tap_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 5*0x258
+
+def goron_tap_sidehop_left(angle):
+    return mask_hold_sidehop_left(angle) - 5*0xB4
+
+def goron_tap_sidehop_right(angle):
+    return mask_hold_sidehop_right(angle) + 5*0xB4
+
 
 
 table = {
@@ -216,21 +262,42 @@ table = {
     "turn left": turn_left,
     "turn right": turn_right,
     "turn 180": turn_180,
-    "sidehop sideroll left": sidehop_sideroll_left,
-    "sidehop sideroll right": sidehop_sideroll_right,
-    "ess down sideroll": ess_down_sideroll,
-    "backflip sideroll": backflip_sideroll,
-    "sword spin shield cancel": sword_spin_shield_cancel,
-    "biggoron slash shield cancel": biggoron_slash_shield_cancel,
-    "biggoron spin shield cancel": biggoron_spin_shield_cancel,
-    "hammer shield cancel": hammer_shield_cancel,
-    "shield top-right": shield_topright,
-    "shield top-left": shield_topleft,
-    "shield bottom-left": shield_bottomleft,
-    "shield bottom-right": shield_bottomright,
     "c-up right": c_up_right,
     "c-up left": c_up_left,
     "deku bubble right": deku_bubble_right,
     "deku bubble left": deku_bubble_left,
     "deku spin": deku_spin,
+    "mask transition": mask_transition,
+    "mask hold sidehop left": mask_hold_sidehop_left,
+    "mask hold sidehop right": mask_hold_sidehop_right,
+    "human 4 frame sidehop left": human_4_frame_sidehop_left,
+    "human 4 frame sidehop right": human_4_frame_sidehop_right,
+    "deku 4 frame sidehop left": deku_4_frame_sidehop_left,
+    "deku 4 frame sidehop right": deku_4_frame_sidehop_right,
+    "goron 4 frame sidehop left": goron_4_frame_sidehop_left,
+    "goron 4 frame sidehop right": goron_4_frame_sidehop_right,
+    "human 3 frame sidehop left": human_3_frame_sidehop_left,
+    "human 3 frame sidehop right": human_3_frame_sidehop_right,
+    "deku 3 frame sidehop left": deku_3_frame_sidehop_left,
+    "deku 3 frame sidehop right": deku_3_frame_sidehop_right,
+    "goron 3 frame sidehop left": goron_3_frame_sidehop_left,
+    "goron 3 frame sidehop right": goron_3_frame_sidehop_right,
+    "human 2 frame sidehop left": human_2_frame_sidehop_left,
+    "human 2 frame sidehop right": human_2_frame_sidehop_right,
+    "deku 2 frame sidehop left": deku_2_frame_sidehop_left,
+    "deku 2 frame sidehop right": deku_2_frame_sidehop_right,
+    "goron 2 frame sidehop left": goron_2_frame_sidehop_left,
+    "goron 2 frame sidehop right": goron_2_frame_sidehop_right,
+    "human 1 frame sidehop left": human_1_frame_sidehop_left,
+    "human 1 frame sidehop right": human_1_frame_sidehop_right,
+    "deku 1 frame sidehop left": deku_1_frame_sidehop_left,
+    "deku 1 frame sidehop right": deku_1_frame_sidehop_right,
+    "goron 1 frame sidehop left": goron_1_frame_sidehop_left,
+    "goron 1 frame sidehop right": goron_1_frame_sidehop_right,
+    "human tap sidehop left": human_tap_sidehop_left,
+    "human tap sidehop right": human_tap_sidehop_right,
+    "deku tap sidehop left": deku_tap_sidehop_left,
+    "deku tap sidehop right": deku_tap_sidehop_right,
+    "goron tap sidehop left": goron_tap_sidehop_left,
+    "goron tap sidehop right": goron_tap_sidehop_right,
 }

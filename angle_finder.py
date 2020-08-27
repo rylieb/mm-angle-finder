@@ -28,9 +28,9 @@ import motions
 # Go to the bottom of this file to select angles and run the search.
 
 getcontext().prec = 4 # Decimal to 4 places
-sys.setrecursionlimit(5000) # basic searches can get a lil' wild
+sys.setrecursionlimit(5000000) # basic searches can get a lil' wild
 
-COST_FLEX = Decimal(8.0) #Not sure why but setting this higher yields more valid results and less fake ones
+COST_FLEX = Decimal(3.0) #Not sure why but setting this higher yields more valid results and less fake ones
 COST_TABLE = {}
 
 MOVEMENT_OPTIONS = {
@@ -38,68 +38,118 @@ MOVEMENT_OPTIONS = {
         "ess left",
         "ess right",
     ],
-    "target enabled": [
+    "target & cardinals available": [
         "ess up",
         "turn left",
         "turn right",
         "turn 180",
     ],
-    "no carry": [
-        "sidehop sideroll left",
-        "sidehop sideroll right",
-        "ess down sideroll",
-        "backflip sideroll",
-    ],
-    "sword": [
-        "sword spin shield cancel",
-    ],
-    "biggoron": [
-        "biggoron slash shield cancel",
-        "biggoron spin shield cancel",
-    ],
-    "hammer": [
-        "hammer shield cancel",
-    ],
-    "shield corners": [
-        "shield top-right",
-        "shield top-left",
-        "shield bottom-left",
-        "shield bottom-right",
-    ],
     "c-up": [
         "c-up left",
         "c-up right",
     ],
-    "deku": [
+    "deku bubble": [
         "deku bubble left",
         "deku bubble right",
+    ],
+    "deku": [
         "deku spin",
+    ],
+    "jp transformation": [
+        "mask transition",
+    ],
+    "us transformation, target & cardinals available": [
+        "mask hold sidehop left",
+        "mask hold sidehop right",
+    ],
+    "us human transformation, target & cardinals available": [
+        "human 4 frame sidehop left",
+        "human 4 frame sidehop right",
+        "human 3 frame sidehop left",
+        "human 3 frame sidehop right",
+        "human 2 frame sidehop left",
+        "human 2 frame sidehop right",
+        "human 1 frame sidehop left",
+        "human 1 frame sidehop right",
+    ],
+    "us human transformation": [
+        "human tap sidehop left",
+        "human tap sidehop right",
+    ],
+    "us deku transformation, target & cardinals available": [
+        "deku 4 frame sidehop left",
+        "deku 4 frame sidehop right",
+        "deku 3 frame sidehop left",
+        "deku 3 frame sidehop right",
+        "deku 2 frame sidehop left",
+        "deku 2 frame sidehop right",
+        "deku 1 frame sidehop left",
+        "deku 1 frame sidehop right",
+    ],
+    "us deku transformation": [
+        "deku tap sidehop left",
+        "deku tap sidehop right",
+    ],
+    "us goron transformation, target & cardinals available": [
+        "goron 1 frame sidehop left",
+        "goron 1 frame sidehop right",
+        "goron 2 frame sidehop left",
+        "goron 2 frame sidehop right",
+        "goron 3 frame sidehop left",
+        "goron 3 frame sidehop right",
+        "goron 4 frame sidehop left",
+        "goron 4 frame sidehop right",
+    ],
+    "us goron transformation": [
+        "goron tap sidehop left",
+        "goron tap sidehop right",
     ],
 }
 BASIC_COSTS = {
-    "ess up": Decimal(0.75),
     "ess left": Decimal(0.1),
     "ess right": Decimal(0.1),
-    "turn left": Decimal(1.0),
-    "turn right": Decimal(1.0),
+    "ess up": Decimal(0.1),
+    "turn left": Decimal(0.6),
+    "turn right": Decimal(0.6),
     "turn 180": Decimal(1.0),
-    "sidehop sideroll left": Decimal(1.0),
-    "sidehop sideroll right": Decimal(1.0),
-    "ess down sideroll": Decimal(1.0),
-    "backflip sideroll": Decimal(1.0),
-    "sword spin shield cancel": Decimal(1.25),
-    "biggoron slash shield cancel": Decimal(1.25),
-    "biggoron spin shield cancel": Decimal(1.25),
-    "hammer shield cancel": Decimal(1.25),
-    "shield top-right": Decimal(1.0),
-    "shield top-left": Decimal(1.0),
-    "shield bottom-left": Decimal(1.0),
-    "shield bottom-right": Decimal(1.0),
     "c-up left": Decimal(3.05),
     "c-up right": Decimal(3.05),
     "deku bubble left": Decimal(3.05),
     "deku bubble right": Decimal(3.05),
-    "deku spin": Decimal(0.75),
+    "deku spin": Decimal(0.9),
+    "mask transition": Decimal(1.5),
+    "mask hold sidehop left": Decimal(3.25),
+    "mask hold sidehop right": Decimal(3.25),
+    "human 4 frame sidehop left": Decimal(3.2),
+    "human 4 frame sidehop right": Decimal(3.2),
+    "human 3 frame sidehop left": Decimal(3.15),
+    "human 3 frame sidehop right": Decimal(3.15),
+    "human 2 frame sidehop left": Decimal(3.1),
+    "human 2 frame sidehop right": Decimal(3.1),
+    "human 1 frame sidehop left": Decimal(3.05),
+    "human 1 frame sidehop right": Decimal(3.05),
+    "human tap sidehop left": Decimal(1.5),
+    "human tap sidehop right": Decimal(1.5),
+    "deku 4 frame sidehop left": Decimal(3.2),
+    "deku 4 frame sidehop right": Decimal(3.2),
+    "deku 3 frame sidehop left": Decimal(3.15),
+    "deku 3 frame sidehop right": Decimal(3.15),
+    "deku 2 frame sidehop left": Decimal(3.1),
+    "deku 2 frame sidehop right": Decimal(3.1),
+    "deku 1 frame sidehop left": Decimal(3.05),
+    "deku 1 frame sidehop right": Decimal(3.05),
+    "deku tap sidehop left": Decimal(1.5),
+    "deku tap sidehop right": Decimal(1.5),
+    "goron 4 frame sidehop left": Decimal(3.2),
+    "goron 4 frame sidehop right": Decimal(3.2),
+    "goron 3 frame sidehop left": Decimal(3.15),
+    "goron 3 frame sidehop right": Decimal(3.15),
+    "goron 2 frame sidehop left": Decimal(3.1),
+    "goron 2 frame sidehop right": Decimal(3.1),
+    "goron 1 frame sidehop left": Decimal(3.05),
+    "goron 1 frame sidehop right": Decimal(3.05),
+    "goron tap sidehop left": Decimal(1.5),
+    "goron tap sidehop right": Decimal(1.5),
 }
 COST_CHAINS = {
     # Consecutive identical movements remove the overhead, so each only costs a frame (0.05s).
@@ -120,7 +170,11 @@ COST_CHAINS = {
     ("c-up left", "ess left"): Decimal(100),
     ("c-up right", "ess right"): Decimal(100),
     ("c-up left", "ess right"): Decimal(100),
-    ("c-up right", "ess left"): Decimal(100),    
+    ("c-up right", "ess left"): Decimal(100),
+
+    # Mask transition after an ess requires entering first person.
+    ("ess left", "mask transition"): Decimal(2.9),
+    ("ess right", "mask transition"): Decimal(2.9),
 }
 
 
@@ -394,8 +448,8 @@ def collect_paths(graph, angle, sample_size=sys.maxsize, number=10):
     for angle, path in navigate_all(graph, angle):
         paths.append((cost_of_path(path), angle, path))
 
-##        if len(paths) == sample_size:
-##            break
+        if len(paths) == sample_size:
+            break
 
     paths.sort()
     return paths[:number]
@@ -422,14 +476,18 @@ def initialize_cost_table():
 
 ALLOWED_GROUPS = [
      "basic",
-##     "target enabled",
-##     "no carry",
-##     "sword",
-##     "biggoron",
-##     "hammer",
-##     "shield corners",
+##     "target & cardinals available",
 ##     "c-up",
-##     "deku",
+##     "deku bubble",
+     "deku",
+##     "jp transformation",
+##     "us transformation, target & cardinals available",,
+##     "us human transformation, target & cardinals available",
+     "us human transformation",
+##     "us deku transformation, target & cardinals available",
+     "us deku transformation",
+##     "us goron transformation, target & cardinals available",
+##     "us goron transformation",
 ]
 
 initialize_cost_table()
@@ -443,6 +501,9 @@ if __name__ == "__main__":
 ##        "downstairs climbable",
 ##        "upstairs",
 ##        "damage boost",
+##        "j0 targeting",
+##        "j1 targeting",
+##        "u0 targeting",
         ]
 
     cardinals_dict = {
@@ -513,135 +574,187 @@ if __name__ == "__main__":
     #due to assuming that you should break up multiple ESS or C-Ups into separate steps, even going so far
     #as to include reversing direction for no reason. As a workaround, only uncomment one at a time.
     damage_boost_dict = {
-	0x2bbc: "place bomb in corner by vase, crouchstab, slash",
-	0x40f4: "hold bomb after",
-	0x2d2c: "2 fast slashes",
-	0x28b4: "drop against tunnel wall, crouchstab",
-	0x2d0c: "drop against tunnel wall, vert slash, 2 hold b",
-	0x4244: "hold bomb after",
-	0x2d24: "vert, crouch, 2 hold",
-	0x0edc: "back wall, 3 hori",
-	0x03d4: "no walls, vert slash",
-	0x4244: "hold bomb after",
-	0x0c7c: "vert, hold",
-	0x19dc: "back wall hori, vert hold",
-	0x1fdc: "hold bomb after",
-	0x0cf4: "2 hori, vert hold",
-	0x2d14: "vase, vert hold, hori hold, hori",
-	0x3024: "vase, vert, vert hold, hori hold",
-	0x62bc: "vase, throw, 2 vert",
-	0x65fc: "vase, throw, jumpslash",
-	0x2d24: "3 hori, jump",
-	0x2a24: "vert, hori, vert, jump",
-	0x307c: "vert, fast hori",
-	0x34d4: "vase, js, 2 vert, drop bomb, 3 vert?",
-	0x1aac: "back wall, crouch, hori",
-	0x1a04: "no walls, 4 vert",
-	0x3d24: "no walls, 2 hori, 1 hold",
-	0x2ab4: "no walls, 2 vert, 2 jump",
-	0x249c: "no walls, 3 vert, 1 forward",
-	0x25dc: "no walls, 2 vert, 1 forward",
-	0x294c: "no walls, vert, thrust, hold",
-	0x2d04: "vase, crouchstab, thrust",
-	0x2d14: "vase, 2 crouch, 1 thrust",
-	0x2bb4: "vase, 3 hori # best that ends with you not in the right position to uncull the moons tear",
-	0xee2c: "ess f463, hori",
-	0xbc8c: "place bomb, ess ed5b, hori",
-	0xccb4: "place bomb, ess f463, 2 hori",
-	0x0834: "ess f463, 3 hori",
-	0x113c: "ess 178b, hori",
-	0xed2c: "ess df4b, 2hold, hori",
-	0xe014: "ess e653, hori",
-	0x184c: "ess 1e93, hori",
-	0x1544: "ess 97b, 3 hold #bestsofar",
-	0xe674: "ess 97b, 1 hori, 1 hold",
-	0x1754: "ess 97b, 1 hori, 2 hold",
-	0x1814: "ess 1e93, 1 hori 1 hold",
-	0x3174: "ess 259b, 3 hold OR shield drop instantly swordless, 1 dry roll",
-	0x3384: "ess 259b, 1 hori 2 hold",
-	0xfbf4: "ess 273, 1 hold",
-	0x12e4: "ess 273, 2 hori 1 hold",
-	0x0b64: "ess 273, 4 hori",
-	0xc484: "ess f463, 2 hold",
-	0xf7cc: "ess f463, 4 hori",
-	0xf6ec: "ess f463, 2 hori 2 hold",
-	0xfBa4: "ess e653, overhead",
-	0xe3e4: "ess e653, place",
-	0xe014: "ess e653, 1 hori",
-	0xdfdc: "ess e653, 1 hold",
-	0xe9b4: "ess e653, 4 hori",
-	0xed2c: "ess df4b, 1 hori 2 hold",
-	0xe06c: "ess d843, 3 hori 1 hold",
-	0xd814: "ess ca33, 1 hori 2 hold",
-	0xa7ec: "ess c32b, 2 hori 0 hold #ok",
-	0xa024: "ess c32b, 2 hori 0 hold #actually we cannot do hold because it changes your targeting angle i am dumb.",
-	0xbf0c: "ess b51x, 4",
-	0xaba4: "ess aexx, 0",
-	0x92dc: "ess aexx, 2",
-	0xb174: "ess aexx, 4",
-	0x1f84: "ess a3ab3, 2 #6e, 5c",
-	0x5454: "ess 56d3, 0",
-	0x3ba4: "ess 56d3, 2 #2e, 10c",
-	0x6f44: "ess 6dbx, 4",
-	0x7084: "ess 72xx, 0",
-	0x9d44: "ess 88xx, -1",
-	0xb974: "ess a42b, -1 #THIS WORKS HOLY FUCKING SHIT 84ess left",
-	0xae1c: "ess a42b, 4",
-	0xa4f4: "ess ab33, 1",
-	0xbf0c: "ess ab33, 3",
-	0xfd24: "1 ess right (259b), drop, 1 ess left (2ca3), 2 hori",
-	0x4db4: "1 ess right (259b), drop, 1 ess left (2ca3), 3 hori",
-	0x328c: "1 ess left (33ab), drop, 1 ess right (2ca3), 1 hori",
-	0x0434: "drop, 1 ess left (33ab), 2 hori#68 ess, 8 cup",
-	0x2b94: "drop, 1 ess right (259b), 1 hori#64 ess, 26 cup",
-	0x4374: "shield drop, y=.345 (starts repeating here)",
-	0x42dc: "shield drop, y=.334",
-	0x4244: "shield drop, y=.722 (cycle2, 1st red dim) #26 ess left, 4 cup left",
-	0x4434: "shield drop, y=.369",
-	0x3f34: "shield drop instantly, 3 hori",
-	0x359c: "shield drop instantly, 1 vert, 2 hori #31 ess left, 2 cup right #Best so far that does end with you in the right position.",
-	0x2e2c: "shield drop instantly, 1 hori, 3 thrust",
-	0x29b4: "shield drop instantly, 3 vert, 1 hold",
-	0x2d0c: "2 ess right, shield drop instantly, 4 #39, 5",
-	0xe674: "3 ess right, shield drop instantly, 0 #66, 3",
-	0x440c: "3 ess right, shield drop instantly, 1",
-	0x2f4c: "ess 0273 ess right, shield drop instantly, 1",
-	0x02dc: "ess right to f463, shield drop instantly, 4 #33, 5",
-	0x1f94: "ess lef 4fcb, shield drop instantly, 1 #32, 2",
-	0x6244: "ess lef 4fcb, shield drop instantly, 3 #32, 2",
-	0x2ecc: "shield drop instantly, 2 dry roll",
-	0x0164: "shield drop instantly, 2 dry roll against tunnel wall #66, 11",
-	0x564c: "shield drop instantly, dry roll against wall, 1 hori #47, 1",
-	0x434c: "shield drop instantly, dry roll vert, thrust, crouch, dry roll in corner, vert",
-	0x42dc: "shield drop, hori slash wall",
-	0x353c: "vase, vert, js, shield drop bomb, 2 crouch",
-	0x2624: "shield drop instantly, 4 vert #30, 4",
-	0x2f44: "shield drop instantly swordless, 1 vert, 1 thrust, 1 hori or, roll, hori, js",
-	0x2d1c: "shield drop instantly swordless, 1 roll, 2 vert, 1 hori #1,8 this one is fucking siiiick",
-	0x2e24: "shield drop instantly swordless, 1 roll, 1 vert, 1 thrust, 1 hori",
-	0x23fc: "drop bomb, pick up instadrop, 1 vert",
-	0x2d04: "drop bomb, pick up instadrop, dry roll, 1 hori",
-	0x28fc: "drop bomb, pick up instadrop, 1 vert, 1 thrust, 1 hori",
-	0x2e24: "instadrop, vert, left, vert",
-	0x37cc: "instadrop sword, vert, 2 left",
-	0x38a4: "instadrop sword, vert, 3 left (or swordless, 1 untarget vert, 1 hori)",
-	0x2ecc: "instadrop swordless, vert, 3 right",
-	0x2bbc: "instadrop swordless, 2vert, right, thrust",
-	0x32cc: "instadrop sword, vert, right",
-        0x405c: "swordless, vert untarget, diagonal untarget",
-        0x2d2c: "swordless, vert, thrust, diagonal untarget",
-        0x328c: "swordless, crouchstab, js",
-        0x2e1c: "swordless, crouchstab, 2 js, diagonal", #31, 0
-        0x2e24: "swordless, crouchstab, 2 js, diagonal untarget",
-        0x2e1c: "sworded, crouchstab, 2 js, diagonal untarget",
+##	0x2bbc: "place bomb in corner by vase, crouchstab, slash",
+##	0x40f4: "hold bomb after",
+##	0x2d2c: "2 fast slashes",
+##	0x28b4: "drop against tunnel wall, crouchstab",
+##	0x2d0c: "drop against tunnel wall, vert slash, 2 hold b",
+##	0x4244: "hold bomb after",
+##	0x2d24: "vert, crouch, 2 hold",
+##	0x0edc: "back wall, 3 hori",
+##	0x03d4: "no walls, vert slash",
+##	0x4244: "hold bomb after",
+##	0x0c7c: "vert, hold",
+##	0x19dc: "back wall hori, vert hold",
+##	0x1fdc: "hold bomb after",
+##	0x0cf4: "2 hori, vert hold",
+##	0x2d14: "vase, vert hold, hori hold, hori",
+##	0x3024: "vase, vert, vert hold, hori hold",
+##	0x62bc: "vase, throw, 2 vert",
+##	0x65fc: "vase, throw, jumpslash",
+##	0x2d24: "3 hori, jump",
+##	0x2a24: "vert, hori, vert, jump",
+##	0x307c: "vert, fast hori",
+##	0x34d4: "vase, js, 2 vert, drop bomb, 3 vert?",
+##	0x1aac: "back wall, crouch, hori",
+##	0x1a04: "no walls, 4 vert",
+##	0x3d24: "no walls, 2 hori, 1 hold",
+##	0x2ab4: "no walls, 2 vert, 2 jump",
+##	0x249c: "no walls, 3 vert, 1 forward",
+##	0x25dc: "no walls, 2 vert, 1 forward",
+##	0x294c: "no walls, vert, thrust, hold",
+##	0x2d04: "vase, crouchstab, thrust",
+##	0x2d14: "vase, 2 crouch, 1 thrust",
+##	0x2bb4: "vase, 3 hori # best that ends with you not in the right position to uncull the moons tear",
+##	0xee2c: "ess f463, hori",
+##	0xbc8c: "place bomb, ess ed5b, hori",
+##	0xccb4: "place bomb, ess f463, 2 hori",
+##	0x0834: "ess f463, 3 hori",
+##	0x113c: "ess 178b, hori",
+##	0xed2c: "ess df4b, 2hold, hori",
+##	0xe014: "ess e653, hori",
+##	0x184c: "ess 1e93, hori",
+##	0x1544: "ess 97b, 3 hold #bestsofar",
+##	0xe674: "ess 97b, 1 hori, 1 hold",
+##	0x1754: "ess 97b, 1 hori, 2 hold",
+##	0x1814: "ess 1e93, 1 hori 1 hold",
+##	0x3174: "ess 259b, 3 hold OR shield drop instantly swordless, 1 dry roll",
+##	0x3384: "ess 259b, 1 hori 2 hold",
+##	0xfbf4: "ess 273, 1 hold",
+##	0x12e4: "ess 273, 2 hori 1 hold",
+##	0x0b64: "ess 273, 4 hori",
+##	0xc484: "ess f463, 2 hold",
+##	0xf7cc: "ess f463, 4 hori",
+##	0xf6ec: "ess f463, 2 hori 2 hold",
+##	0xfBa4: "ess e653, overhead",
+##	0xe3e4: "ess e653, place",
+##	0xe014: "ess e653, 1 hori",
+##	0xdfdc: "ess e653, 1 hold",
+##	0xe9b4: "ess e653, 4 hori",
+##	0xed2c: "ess df4b, 1 hori 2 hold",
+##	0xe06c: "ess d843, 3 hori 1 hold",
+##	0xd814: "ess ca33, 1 hori 2 hold",
+##	0xa7ec: "ess c32b, 2 hori 0 hold #ok",
+##	0xa024: "ess c32b, 2 hori 0 hold #actually we cannot do hold because it changes your targeting angle i am dumb.",
+##	0xbf0c: "ess b51x, 4",
+##	0xaba4: "ess aexx, 0",
+##	0x92dc: "ess aexx, 2",
+##	0xb174: "ess aexx, 4",
+##	0x1f84: "ess a3ab3, 2 #6e, 5c",
+##	0x5454: "ess 56d3, 0",
+##	0x3ba4: "ess 56d3, 2 #2e, 10c",
+##	0x6f44: "ess 6dbx, 4",
+##	0x7084: "ess 72xx, 0",
+##	0x9d44: "ess 88xx, -1",
+##	0xb974: "ess a42b, -1 #THIS WORKS HOLY FUCKING SHIT 84ess left",
+##	0xae1c: "ess a42b, 4",
+##	0xa4f4: "ess ab33, 1",
+##	0xbf0c: "ess ab33, 3",
+##	0xfd24: "1 ess right (259b), drop, 1 ess left (2ca3), 2 hori",
+##	0x4db4: "1 ess right (259b), drop, 1 ess left (2ca3), 3 hori",
+##	0x328c: "1 ess left (33ab), drop, 1 ess right (2ca3), 1 hori",
+##	0x0434: "drop, 1 ess left (33ab), 2 hori#68 ess, 8 cup",
+##	0x2b94: "drop, 1 ess right (259b), 1 hori#64 ess, 26 cup",
+##	0x4374: "shield drop, y=.345 (starts repeating here)",
+##	0x42dc: "shield drop, y=.334",
+##	0x4244: "shield drop, y=.722 (cycle2, 1st red dim) #26 ess left, 4 cup left",
+##	0x4434: "shield drop, y=.369",
+##	0x3f34: "shield drop instantly, 3 hori",
+##	0x359c: "shield drop instantly, 1 vert, 2 hori #31 ess left, 2 cup right #Best so far that does end with you in the right position.",
+##	0x2e2c: "shield drop instantly, 1 hori, 3 thrust",
+##	0x29b4: "shield drop instantly, 3 vert, 1 hold",
+##	0x2d0c: "2 ess right, shield drop instantly, 4 #39, 5",
+##	0xe674: "3 ess right, shield drop instantly, 0 #66, 3",
+##	0x440c: "3 ess right, shield drop instantly, 1",
+##	0x2f4c: "ess 0273 ess right, shield drop instantly, 1",
+##	0x02dc: "ess right to f463, shield drop instantly, 4 #33, 5",
+##	0x1f94: "ess lef 4fcb, shield drop instantly, 1 #32, 2",
+##	0x6244: "ess lef 4fcb, shield drop instantly, 3 #32, 2",
+##	0x2ecc: "shield drop instantly, 2 dry roll",
+##	0x0164: "shield drop instantly, 2 dry roll against tunnel wall #66, 11",
+##	0x564c: "shield drop instantly, dry roll against wall, 1 hori #47, 1",
+##	0x434c: "shield drop instantly, dry roll vert, thrust, crouch, dry roll in corner, vert",
+##	0x42dc: "shield drop, hori slash wall",
+##	0x353c: "vase, vert, js, shield drop bomb, 2 crouch",
+##	0x2624: "shield drop instantly, 4 vert #30, 4",
+##	0x2f44: "shield drop instantly swordless, 1 vert, 1 thrust, 1 hori or, roll, hori, js",
+##	0x2d1c: "shield drop instantly swordless, 1 roll, 2 vert, 1 hori #1,8 this one is fucking siiiick",
+##	0x2e24: "shield drop instantly swordless, 1 roll, 1 vert, 1 thrust, 1 hori",
+##	0x23fc: "drop bomb, pick up instadrop, 1 vert",
+##	0x2d04: "drop bomb, pick up instadrop, dry roll, 1 hori",
+##	0x28fc: "drop bomb, pick up instadrop, 1 vert, 1 thrust, 1 hori",
+##	0x2e24: "instadrop, vert, left, vert",
+##	0x37cc: "instadrop sword, vert, 2 left",
+##	0x38a4: "instadrop sword, vert, 3 left (or swordless, 1 untarget vert, 1 hori)",
+##	0x2ecc: "instadrop swordless, vert, 3 right",
+##	0x2bbc: "instadrop swordless, 2vert, right, thrust",
+##	0x32cc: "instadrop sword, vert, right",
+##        0x405c: "swordless, vert untarget, diagonal untarget",
+##        0x2d2c: "swordless, vert, thrust, diagonal untarget",
+##        0x328c: "swordless, crouchstab, js",
+##        0x2e1c: "swordless, crouchstab, 2 js, diagonal", #31, 0
+##        0x2e24: "swordless, crouchstab, 2 js, diagonal untarget",
+##        0x2e1c: "sworded, crouchstab, 2 js, diagonal untarget",
+##        0xBDA7: "fake 1",
+##        0x1AF3: "fake 2",
+    0x1d44: "instadrop sworded, 2 roll",
+    0x2ecc: "drop, 3 hori",
+##    0x2574: "2 ess right, chu",
+    0x1c7c: "instadrop sworded, 1 roll, 1 vert, 1 diag?",
+    0x1a04: "drop, 2 thrust",
+    0xee2c: "drop, 1 vert, 1 diag",
+    0x1c94: "instadrop, 2 roll, 1 diag untarg",
+    0xeec4: "instadrop sworded vase",
+    0x1cac: "drop vase, 2 crouchstab",
+    0x15e4: "instadrop, 1 vert 2 diag untarg",
+    0xe674: "1 hori, 1 vert, 1 diag untarg",
+    0x1fec: "drop bomb, 1 vert untarg",
+    0x1c4c: "idk",
+    0x1c1c: "instadrop swordless, 2 roll, 1 vert",
+    0x3e54: "2 ess left",
+##    0x72cc: "ess left, chu",
+    0x4434: "instadrop sworded, 1 hold b",
+    0x27b4: "1 ess right, 3 hori",
+    0xf28c: "1 ess left, 2 hori",
+    0x2244: "instadrop, something, thrust",
+    0x1c64: "instadrop swordless, 2 js, 1 diag untarg",
+    0x1444: "instadrop sword, 4 vert",
+    0x2874: "?",
+    0x22fc: "vase, 2 vert, 1 diag",
+    0x1bb4: "dry roll, ?, js, diag slash",
+    0xdfc: "instadrop swordless, 3 diag untarg",
+    0x19dc: "drop bomb, 1 ess right, 1 hori",
+    0x1cac: "dry roll ? thrust ?",
+    0x1a04: "several thrusts?",
+    0x144c: "idk",
         }
 
+    j0_targeting_dict = {
+##        0xbd23: "J0 save context",
+##        0x1b57: "J0 heap copy of playing file",
+        0x2ca3: "J0 heap copy of created file",
+        }
+
+    j1_targeting_dict = {
+##        0xbdcf: "J1 save context",
+##        0x1c07: "J1 heap copy of playing file",
+        0x2d53: "J1 heap copy of created file",
+        }
+
+    u0_targeting_dict = {
+        0xbda7: "U0 save context",
+        #0x1af3: "U0 heap copy of playing file",
+        }
+    
     starting_angles_switcher = {
         "cardinals": cardinals_dict,
         "downstairs": downstairs_dict,
         "downstairs climbable": downstairs_climbable_dict,
         "upstairs": upstairs_dict,
-        "damage boost": damage_boost_dict,        
+        "damage boost": damage_boost_dict,
+        "j0 targeting": j0_targeting_dict,
+        "j1 targeting": j1_targeting_dict,
+        "u0 targeting": u0_targeting_dict,
         }
         
     starting_angles_dict = {
@@ -659,15 +772,24 @@ if __name__ == "__main__":
 
 
 
-    # DESIRED ANGLES - Uncomment only one.
+    # Uncomment one of the link_addr lines based on your desired version.
+    #link_addr=0x3fffa0 #JP 1.0 
+    #link_addr=0x400260 #JP 1.1
+    link_addr=0x3ffdb0 #US
 
     # Stale reference drop angles (at most 12 words prior to Link + 0xAD4)
+    combo_angle = (link_addr + 0xAD4) % 0x10000
+    earliest = (link_addr + 0xAD4 - 12*4) % 0x10000
 
-    #JP 1.0
-    #for angle in list(range(0x0a44,0x0a74+0x1,0x4)):
 
-    #JP 1.1
-    for angle in list(range(0x0d04,0x0d34+0x1,0x4)):
+
+    # DESIRED ANGLES - Uncomment only one "for" statement.
+
+
+
+    # Stale Reference Drop Angle (all versions)
+    #for angle in list(range(earliest, combo_angle+1, 4)):
+
 
 
     # JP 1.0 TARGETING ANGLES
@@ -684,6 +806,7 @@ if __name__ == "__main__":
     #for angle in [0xBD23,0x1B57,0x2CA3]:
 
 
+
     # JP 1.1 TARGETING ANGLES
     # Targeting angle (save context)[playing file]
     #for angle in [0xBDCF]:
@@ -698,19 +821,40 @@ if __name__ == "__main__":
     #for angle in [0xBDCF,0x1C07,0x2D53]:
 
 
-    # FACING ANGLES (same for both)
+
+    # US 1.0 TARGETING ANGLES
+    # Targeting angle (save context)[playing file]
+    #for angle in [0xBDA7]:
+
+    # Targeting angle (heap copy)[playing file]
+    for angle in [0x1AF3]:
+
+    # We cannot jump to the playing file via a filename in the US charset.
+    # Thus, in order to use both files, we can only consider
+    # angle setups that send us to the playing file.
+
+    # All targeting angles
+    #for angle in [0xBDA7,0x1AF3]:
+
+
+
+
+
+    # FACING ANGLES (same for all versions)
     # Facing angle (save context)
     #for angle in [0x0807]:
 
     # Facing angle (heap copy)
     #for angle in [0x0814]:
 
+    # All facing angles
+    #for angle in [0x0807, 0x0814]:
 
 
     
     # Collect the 5 fastest sequences of the first 50 visited.  The fastest
     # sequence collected is at least tied as the fastest sequence overall.
-        paths.extend(collect_paths(graph, angle, sample_size=sys.maxsize, number=5))
+        paths.extend(collect_paths(graph, angle, sample_size=50000, number=3))
     # Results seem to be better with an unlimited sample_size, but everything after the 6th
     # result is invalid with a COST_FLEX of 8. Any higher COST_FLEX increases processing time
     # dramatically, so we have to limit the number of results to 6. It still seems to miss some
