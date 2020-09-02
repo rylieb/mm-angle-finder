@@ -28,7 +28,7 @@ import motions
 # Go to the bottom of this file to select angles and run the search.
 
 getcontext().prec = 4 # Decimal to 4 places
-sys.setrecursionlimit(5000000) # basic searches can get a lil' wild
+sys.setrecursionlimit(5000) # basic searches can get a lil' wild
 
 COST_FLEX = Decimal(3.0) #Not sure why but setting this higher yields more valid results and less fake ones
 COST_TABLE = {}
@@ -118,18 +118,36 @@ BASIC_COSTS = {
     "deku bubble right": Decimal(3.05),
     "deku spin": Decimal(0.9),
     "mask transition": Decimal(1.5),
-    "mask hold sidehop left": Decimal(3.25),
-    "mask hold sidehop right": Decimal(3.25),
-    "human 4 frame sidehop left": Decimal(3.2),
-    "human 4 frame sidehop right": Decimal(3.2),
-    "human 3 frame sidehop left": Decimal(3.15),
-    "human 3 frame sidehop right": Decimal(3.15),
-    "human 2 frame sidehop left": Decimal(3.1),
-    "human 2 frame sidehop right": Decimal(3.1),
-    "human 1 frame sidehop left": Decimal(3.05),
-    "human 1 frame sidehop right": Decimal(3.05),
-    "human tap sidehop left": Decimal(1.5),
-    "human tap sidehop right": Decimal(1.5),
+
+    # COSTS FOR MASK TRANSITION
+##    "mask hold sidehop left": Decimal(3.25),
+##    "mask hold sidehop right": Decimal(3.25),
+##    "human 4 frame sidehop left": Decimal(3.2),
+##    "human 4 frame sidehop right": Decimal(3.2),
+##    "human 3 frame sidehop left": Decimal(3.15),
+##    "human 3 frame sidehop right": Decimal(3.15),
+##    "human 2 frame sidehop left": Decimal(3.1),
+##    "human 2 frame sidehop right": Decimal(3.1),
+##    "human 1 frame sidehop left": Decimal(3.05),
+##    "human 1 frame sidehop right": Decimal(3.05),
+##    "human tap sidehop left": Decimal(1.5),
+##    "human tap sidehop right": Decimal(1.5),
+
+    # COSTS FOR COLLISION ANGLE (no mask transition)
+    "mask hold sidehop left": Decimal(1.0),
+    "mask hold sidehop right": Decimal(1.0),
+    "human 4 frame sidehop left": Decimal(1.5),
+    "human 4 frame sidehop right": Decimal(1.5),
+    "human 3 frame sidehop left": Decimal(1.5),
+    "human 3 frame sidehop right": Decimal(1.5),
+    "human 2 frame sidehop left": Decimal(1.5),
+    "human 2 frame sidehop right": Decimal(1.5),
+    "human 1 frame sidehop left": Decimal(1.5),
+    "human 1 frame sidehop right": Decimal(1.5),
+    "human tap sidehop left": Decimal(0.5),
+    "human tap sidehop right": Decimal(0.5),
+
+    
     "deku 4 frame sidehop left": Decimal(3.2),
     "deku 4 frame sidehop right": Decimal(3.2),
     "deku 3 frame sidehop left": Decimal(3.15),
@@ -434,7 +452,7 @@ def print_path(angle, description, path):
         print(f"{motion['motion']:<{text_length}} to {motion['angle']}")
 
 
-def collect_paths(graph, angle, sample_size=sys.maxsize, number=10):
+def collect_paths(graph, angle, sample_size=20, number=10):
     """Sample 'sample_size' paths, returning the 'number' cheapest of those.
 
     Returns a list of
@@ -477,15 +495,15 @@ def initialize_cost_table():
 ALLOWED_GROUPS = [
      "basic",
 ##     "target & cardinals available",
-##     "c-up",
+     "c-up",
 ##     "deku bubble",
-     "deku",
+##     "deku",
 ##     "jp transformation",
-##     "us transformation, target & cardinals available",,
+##     "us transformation, target & cardinals available",
 ##     "us human transformation, target & cardinals available",
      "us human transformation",
 ##     "us deku transformation, target & cardinals available",
-     "us deku transformation",
+##     "us deku transformation",
 ##     "us goron transformation, target & cardinals available",
 ##     "us goron transformation",
 ]
@@ -497,13 +515,14 @@ if __name__ == "__main__":
     
     ALLOWED_ANGLE_GROUPS = [
         "cardinals",
-        "downstairs",
+##        "downstairs",
 ##        "downstairs climbable",
 ##        "upstairs",
 ##        "damage boost",
 ##        "j0 targeting",
 ##        "j1 targeting",
 ##        "u0 targeting",
+        "timestop",
         ]
 
     cardinals_dict = {
@@ -745,6 +764,13 @@ if __name__ == "__main__":
         0xbda7: "U0 save context",
         #0x1af3: "U0 heap copy of playing file",
         }
+
+    timestop_dict = {
+        0x3ddf: "June 2020 - Present timestop angle",
+        0x7ddf: "June 2020 - Present timestop angle",
+        0xbddf: "June 2020 - Present timestop angle",
+        0xfddf: "June 2020 - Present timestop angle",
+        }
     
     starting_angles_switcher = {
         "cardinals": cardinals_dict,
@@ -755,6 +781,7 @@ if __name__ == "__main__":
         "j0 targeting": j0_targeting_dict,
         "j1 targeting": j1_targeting_dict,
         "u0 targeting": u0_targeting_dict,
+        "timestop": timestop_dict,
         }
         
     starting_angles_dict = {
@@ -827,7 +854,7 @@ if __name__ == "__main__":
     #for angle in [0xBDA7]:
 
     # Targeting angle (heap copy)[playing file]
-    for angle in [0x1AF3]:
+    #for angle in [0x1AF3]:
 
     # We cannot jump to the playing file via a filename in the US charset.
     # Thus, in order to use both files, we can only consider
@@ -851,15 +878,73 @@ if __name__ == "__main__":
     #for angle in [0x0807, 0x0814]:
 
 
+    # US 1.0 FD MASK ANGLES
+    #for angle in [0xFF85, 0x007B, 0x066A, 0x066C, 0x0E0C]:
+
+
+
+
+    # CHEST SRM COLLISION ANGLE SHENANIGANS
+    #(very long because it's a bit hacked in)
+    #[You're on your own for figuring out which wall to collide with atm,
+    # just know it's possible. It will be off by a multiple of 0x4000 from
+    # the desired angle.]
+
+
+    #Flags (avoiding blue rupees)
+
+    #All flags
+    flags = list(range(0, 0xFF+1, 1))
+
+    # Uncomment only one line based on your use case for the desired item.
+    safe_flags = [ 0xBF & flag for flag in flags] # Empty slot
+    #safe_flags = [ 0xDF & flag for flag in flags] # Full slot
+    #safe_flags = [ 0x9F & flag for flag in flags] # Always safe, but fewer results.
+
+    # Remove duplicates.
+    safe_flags = list( dict.fromkeys(safe_flags) )
+
+
+    #The working values for various items.
+    bombchus = [0x0700 + flag for flag in safe_flags]
+    fd_mask = [0x3500 + flag for flag in safe_flags]
+    big_bomb_bag = [0x5700 + flag for flag in safe_flags]
+
+    # Desired collision angles. SET THIS TO ANY OF THE ABOVE ITEMS YOU WANT.
+    cangs = fd_mask
+
+
+    # Walls available to collide with.    
+    walls = list(cardinals_dict)
+
+
+    # Convert the list of working collision angles into movement angles, since
+    # this script is designed to find *movement* angle setups.
+    movement_angles=[]
+    for wall in walls:
+        movement_angles.extend([(abs(wall+cang) % 0x8000) for cang in cangs])
+        
+    # Remove duplicates.
+    movement_angles = list( dict.fromkeys(movement_angles) )
+
+
+    #Movement angles for US 1.0 Collision angles.  COMMENT THIS LINE IF NOT LOOKING FOR COLLISION ANGLE.
+    for angle in movement_angles:
+    
+
     
     # Collect the 5 fastest sequences of the first 50 visited.  The fastest
     # sequence collected is at least tied as the fastest sequence overall.
-        paths.extend(collect_paths(graph, angle, sample_size=50000, number=3))
+        paths.extend(collect_paths(graph, angle, sample_size=50, number=1))
     # Results seem to be better with an unlimited sample_size, but everything after the 6th
     # result is invalid with a COST_FLEX of 8. Any higher COST_FLEX increases processing time
     # dramatically, so we have to limit the number of results to 6. It still seems to miss some
     # good ones though sadly. I think it's breaking up c-ups when there's more than 2 of them.
     # It seems to disproportionately dislike large numbers of c-up and small numbers of ess.
+
+    # I'm not sure why, but when searching for collision angles this seems to find
+    # something like 100 results times whatever we set "number" to so I'm just
+    # setting it to 1 to try to limit things a bit.
 
     paths.sort()
 
