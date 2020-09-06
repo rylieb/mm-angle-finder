@@ -122,15 +122,28 @@ def c_up_left(angle):
     return angle + 0x03c0
 
 
-# deku movement
+# first person items
 
-def deku_bubble_right(angle):
+def first_person_item_right(angle):
     return angle - 0x379
 
-
-def deku_bubble_left(angle):
+def first_person_item_left(angle):
     return angle + 0x377
 
+def first_person_item_forward(angle):
+    if (abs(angle) % 0x10000 > 0x3337) and (abs(angle) % 0x10000 < 0x8000):
+        return 0x36B0
+    else:
+        return angle + 0x379
+
+def first_person_item_backward(angle):
+    if (abs(angle) % 0x10000 < 0xCCC7) and (abs(angle) % 0x10000 > 0x8000):
+        return 0xC950
+    else:
+        return angle - 0x377
+
+
+# deku movement
 
 def deku_spin(angle):
     return angle - 0x01e0
@@ -264,8 +277,10 @@ table = {
     "turn 180": turn_180,
     "c-up right": c_up_right,
     "c-up left": c_up_left,
-    "deku bubble right": deku_bubble_right,
-    "deku bubble left": deku_bubble_left,
+    "first person item right": first_person_item_right,
+    "first person item left": first_person_item_left,
+    "first person item forward": first_person_item_forward,
+    "first person item backward": first_person_item_backward,
     "deku spin": deku_spin,
     "mask transition": mask_transition,
     "mask hold sidehop left": mask_hold_sidehop_left,

@@ -48,9 +48,13 @@ MOVEMENT_OPTIONS = {
         "c-up left",
         "c-up right",
     ],
-    "deku bubble": [
-        "deku bubble left",
-        "deku bubble right",
+    "first person item horizontal": [
+        "first person item left",
+        "first person item right",
+    ],
+    "first person item vertical": [
+        "first person item forward",
+        "first person item backward",
     ],
     "deku": [
         "deku spin",
@@ -114,8 +118,10 @@ BASIC_COSTS = {
     "turn 180": Decimal(1.0),
     "c-up left": Decimal(3.05),
     "c-up right": Decimal(3.05),
-    "deku bubble left": Decimal(3.05),
-    "deku bubble right": Decimal(3.05),
+    "first person item left": Decimal(3.05),
+    "first person item right": Decimal(3.05),
+    "first person item forward": Decimal(3.05),
+    "first person item backward": Decimal(3.05),
     "deku spin": Decimal(0.9),
     "mask transition": Decimal(1.5),
 
@@ -175,8 +181,10 @@ COST_CHAINS = {
     ("ess right", "ess right"): Decimal(0.05),
     ("c-up left", "c-up left"): Decimal(0.05),
     ("c-up right", "c-up right"): Decimal(0.05),
-    ("deku bubble left", "deku bubble left"): Decimal(0.05),
-    ("deku bubble right", "deku bubble right"): Decimal(0.05),
+    ("first person item left", "first person item left"): Decimal(0.05),
+    ("first person item right", "first person item right"): Decimal(0.05),
+    ("first person item forward", "first person item forward"): Decimal(0.05),
+    ("first person item backward", "first person item backward"): Decimal(0.05),
 
     # Don't ever consider changing directions for reversible movements.
     ("ess left", "ess right"): Decimal(100),
@@ -493,15 +501,16 @@ def initialize_cost_table():
 
 
 ALLOWED_GROUPS = [
-     "basic",
+##     "basic",
 ##     "target & cardinals available",
-     "c-up",
-##     "deku bubble",
+##     "c-up",
+##     "first person item horizontal",
+     "first person item vertical",
 ##     "deku",
 ##     "jp transformation",
 ##     "us transformation, target & cardinals available",
 ##     "us human transformation, target & cardinals available",
-     "us human transformation",
+##     "us human transformation",
 ##     "us deku transformation, target & cardinals available",
 ##     "us deku transformation",
 ##     "us goron transformation, target & cardinals available",
@@ -522,14 +531,15 @@ if __name__ == "__main__":
 ##        "j0 targeting",
 ##        "j1 targeting",
 ##        "u0 targeting",
-        "timestop",
+##        "timestop",
         ]
 
     cardinals_dict = {
         0x0000: "Southern wall (entrance to tunnel, observatory door)",
-        0x4000: "Eastern wall (tunnel, starpost by observatory door)",
-        0x8000: "Northern wall (double boxes, yellow stair flight, couch)",
-        0xc000: "Western wall (tunnel, starpost by observatory door)",
+#        0x4000: "Eastern wall (tunnel, starpost by observatory door)",
+#        0x8000: "Northern wall (double boxes, yellow stair flight, couch)",
+#        0xc000: "Western wall (tunnel, starpost by observatory door)",
+#        0x0a64: "Pot Drop Angle",
         }
         
     downstairs_dict = {
@@ -872,7 +882,7 @@ if __name__ == "__main__":
     #for angle in [0x0807]:
 
     # Facing angle (heap copy)
-    #for angle in [0x0814]:
+    for angle in [0x0814]:
 
     # All facing angles
     #for angle in [0x0807, 0x0814]:
@@ -894,175 +904,175 @@ if __name__ == "__main__":
     #Flags (avoiding blue rupees)
 
     #All flags
-    flags = list(range(0, 0xFF+1, 1))
-
-    # Uncomment only one line based on your use case for the desired item.
-    #safe_flags = [ 0xBF & flag for flag in flags] # Empty slot
-    safe_flags = [ 0xDF & flag for flag in flags] # Full slot
-    #safe_flags = [ 0x9F & flag for flag in flags] # Always safe, but fewer results.
-
-    # Remove duplicates.
-    safe_flags = list( dict.fromkeys(safe_flags) )
-
-
-    #The working values for various items.
-    ocarina = [0x0000 + flag for flag in safe_flags]
-    bow = [0x0100 + flag for flag in safe_flags]
-    fire_arrow = [0x0200 + flag for flag in safe_flags]
-    ice_arrow = [0x0300 + flag for flag in safe_flags]
-    light_arrow = [0x0400 + flag for flag in safe_flags]
-    fairy_ocarina_oot = [0x0500 + flag for flag in safe_flags]
-    bomb = [0x0600 + flag for flag in safe_flags] #only gives 1 if you already have bomb bag
-    bombchus = [0x0700 + flag for flag in safe_flags]
-    stick = [0x0800 + flag for flag in safe_flags]
-    nut = [0x0900 + flag for flag in safe_flags]
-    bean = [0x0a00 + flag for flag in safe_flags]
-    fairy_slingshot_oot = [0x0b00 + flag for flag in safe_flags]
-    keg = [0x0c00 + flag for flag in safe_flags]
-    pictobox = [0x0d00 + flag for flag in safe_flags]
-    lens = [0x0e00 + flag for flag in safe_flags]
-    hookshot = [0x0f00 + flag for flag in safe_flags]
-    gf_sword = [0x1000 + flag for flag in safe_flags]
-    longshot_oot = [0x1100 + flag for flag in safe_flags]
-    bottle = [0x1200 + flag for flag in safe_flags]
-    red_potion = [0x1300 + flag for flag in safe_flags]
-    green_potion = [0x1400 + flag for flag in safe_flags]
-    blue_potion = [0x1500 + flag for flag in safe_flags]
-    fairy = [0x1600 + flag for flag in safe_flags]
-    deku_princess = [0x1700 + flag for flag in safe_flags]
-    milk = [0x1800 + flag for flag in safe_flags]
-    half_milk = [0x1900 + flag for flag in safe_flags]
-    fish = [0x1a00 + flag for flag in safe_flags]
-    bug = [0x1b00 + flag for flag in safe_flags]
-    blue_fire_oot = [0x1c00 + flag for flag in safe_flags]
-    poe = [0x1d00 + flag for flag in safe_flags]
-    big_poe = [0x1e00 + flag for flag in safe_flags]
-    spring_water = [0x1f00 + flag for flag in safe_flags]
-    hot_spring_water = [0x2000 + flag for flag in safe_flags]
-    zora_egg = [0x2100 + flag for flag in safe_flags]
-    gold_dust = [0x2200 + flag for flag in safe_flags]
-    magic_mushroom = [0x2300 + flag for flag in safe_flags]
-    sea_horse = [0x2400 + flag for flag in safe_flags]
-    chateau_romani = [0x2500 + flag for flag in safe_flags]
-    hylian_loach_beta = [0x2600 + flag for flag in safe_flags]
-    obabas_drink_beta = [0x2700 + flag for flag in safe_flags]
-    moons_tear = [0x2800 + flag for flag in safe_flags]
-    land_title_deed = [0x2900 + flag for flag in safe_flags]
-    swamp_title_deed = [0x2a00 + flag for flag in safe_flags]
-    mountain_title_deed = [0x2b00 + flag for flag in safe_flags]
-    ocean_title_deed = [0x2c00 + flag for flag in safe_flags]
-    room_key = [0x2d00 + flag for flag in safe_flags]
-    expressmail = [0x2e00 + flag for flag in safe_flags]
-    letter = [0x2f00 + flag for flag in safe_flags]
-    pendant = [0x3000 + flag for flag in safe_flags]
-    tingles_map = [0x3100 + flag for flag in safe_flags]
-    deku_mask = [0x3200 + flag for flag in safe_flags]
-    goron_mask = [0x3300 + flag for flag in safe_flags]
-    zora_mask = [0x3400 + flag for flag in safe_flags]
-    fd_mask = [0x3500 + flag for flag in safe_flags]
-    mask_of_truth = [0x3600 + flag for flag in safe_flags]
-    kafeis_mask = [0x3700 + flag for flag in safe_flags]
-    all_night_mask = [0x3800 + flag for flag in safe_flags]
-    bunny_hood = [0x3900 + flag for flag in safe_flags]
-    keaton_mask = [0x3a00 + flag for flag in safe_flags]
-    garos_mask = [0x3b00 + flag for flag in safe_flags]
-    romanis_mask = [0x3c00 + flag for flag in safe_flags]
-    circus_leaders_mask = [0x3d00 + flag for flag in safe_flags]
-    postmans_hat = [0x3e00 + flag for flag in safe_flags]
-    couples_mask = [0x3f00 + flag for flag in safe_flags]
-    gf_mask = [0x4000 + flag for flag in safe_flags]
-    gibdo_mask = [0x4100 + flag for flag in safe_flags]
-    don_geros_mask = [0x4200 + flag for flag in safe_flags]
-    kamaros_mask = [0x4300 + flag for flag in safe_flags]
-    captains_hat = [0x4400 + flag for flag in safe_flags]
-    stone_mask = [0x4500 + flag for flag in safe_flags]
-    bremen_mask = [0x4600 + flag for flag in safe_flags]
-    blast_mask = [0x4700 + flag for flag in safe_flags]
-    mask_of_scents = [0x4800 + flag for flag in safe_flags]
-    giants_mask = [0x4900 + flag for flag in safe_flags]
-    fire_bow = [0x4a00 + flag for flag in safe_flags]
-    ice_bow = [0x4b00 + flag for flag in safe_flags]
-    light_bow = [0x4c00 + flag for flag in safe_flags]
-    kokiri_sword = [0x4d00 + flag for flag in safe_flags]
-    razor_sword = [0x4e00 + flag for flag in safe_flags]
-    gilded_sword = [0x4f00 + flag for flag in safe_flags]
-    fd_sword = [0x5000 + flag for flag in safe_flags]
-    heros_shield = [0x5100 + flag for flag in safe_flags]
-    mirror_shield = [0x5200 + flag for flag in safe_flags]
-    quiver = [0x5300 + flag for flag in safe_flags]
-    large_quiver = [0x5400 + flag for flag in safe_flags]
-    largest_quiver = [0x5500 + flag for flag in safe_flags]
-    bomb_bag = [0x5600 + flag for flag in safe_flags]
-    big_bomb_bag = [0x5700 + flag for flag in safe_flags]
-    biggest_bomb_bag = [0x5800 + flag for flag in safe_flags]
-    child_wallet_beta = [0x5900 + flag for flag in safe_flags]
-    adult_wallet = [0x5a00 + flag for flag in safe_flags]
-    giant_wallet = [0x5b00 + flag for flag in safe_flags]
-    fishing_rod_oot = [0x5c00 + flag for flag in safe_flags]
-    odolwas_remains = [0x5d00 + flag for flag in safe_flags]
-    gohts_remains = [0x5e00 + flag for flag in safe_flags]
-    gyorgs_remains = [0x5f00 + flag for flag in safe_flags]
-    twinmolds_remains = [0x6000 + flag for flag in safe_flags]
-    sonata = [0x6100 + flag for flag in safe_flags]
-    lullaby = [0x6200 + flag for flag in safe_flags]
-    nwbn = [0x6300 + flag for flag in safe_flags]
-    elegy = [0x6400 + flag for flag in safe_flags]
-    oath = [0x6500 + flag for flag in safe_flags]
-    sarias_song = [0x6600 + flag for flag in safe_flags]
-    song_of_time = [0x6700 + flag for flag in safe_flags]
-    song_of_healing = [0x6800 + flag for flag in safe_flags]
-    eponas_song = [0x6900 + flag for flag in safe_flags]
-    song_of_soaring = [0x6a00 + flag for flag in safe_flags]
-    song_of_storms = [0x6b00 + flag for flag in safe_flags]
-    suns_song = [0x6c00 + flag for flag in safe_flags]
-    bombers_notebook = [0x6d00 + flag for flag in safe_flags]
-    gold_skulltula_token = [0x6e00 + flag for flag in safe_flags]
-    heart_container = [0x6f00 + flag for flag in safe_flags]
-    piece_of_heart = [0x700 + flag for flag in safe_flags]
-    x40_bit_1ef72d = [0x7100 + flag for flag in safe_flags]
-    x50_bit_1ef72d = [0x7200 + flag for flag in safe_flags]
-    lullaby_intro = [0x7300 + flag for flag in safe_flags]
-    boss_key = [0x7400 + flag for flag in safe_flags]
-    compass = [0x7500 + flag for flag in safe_flags]
-    dungeon_map = [0x7600 + flag for flag in safe_flags]
-    stray_fairy = [0x7700 + flag for flag in safe_flags]
-    small_key = [0x7800 + flag for flag in safe_flags]
-    magic_jar = [0x7900 + flag for flag in safe_flags]
-    magic_jar_2 = [0x7a00 + flag for flag in safe_flags]
-    piece_of_heart_2 = [0x7b00 + flag for flag in safe_flags]
-    glitched_ocarina_slot = [0x7c00 + flag for flag in safe_flags]
-    glitched_third_bottle_slot = [0x7d00 + flag for flag in safe_flags]
-    glitched_ocarina_slot_2 = [0x7e00 + flag for flag in safe_flags]
-    glitched_ocarina_slot_3 = [0x7f00 + flag for flag in safe_flags]
-    glitched_ocarina_slot_4 = [0x8000 + flag for flag in safe_flags]
-    
-
-    # Desired collision angles. SET THIS TO ANY OF THE ABOVE ITEMS YOU WANT.
-    cangs = song_of_soaring
-
-
-    # Walls available to collide with.    
-    walls = list(cardinals_dict)
-
-
-    # Convert the list of working collision angles into movement angles, since
-    # this script is designed to find *movement* angle setups.
-    movement_angles=[]
-    for wall in walls:
-        movement_angles.extend([(abs(wall+cang) % 0x8000) for cang in cangs])
-        
-    # Remove duplicates.
-    movement_angles = list( dict.fromkeys(movement_angles) )
-
-
-    #Movement angles for US 1.0 Collision angles.  COMMENT THIS LINE IF NOT LOOKING FOR COLLISION ANGLE.
-    for angle in movement_angles:
+##    flags = list(range(0, 0xFF+1, 1))
+##
+##    # Uncomment only one line based on your use case for the desired item.
+##    #safe_flags = [ 0xBF & flag for flag in flags] # Empty slot
+##    safe_flags = [ 0xDF & flag for flag in flags] # Full slot
+##    #safe_flags = [ 0x9F & flag for flag in flags] # Always safe, but fewer results.
+##
+##    # Remove duplicates.
+##    safe_flags = list( dict.fromkeys(safe_flags) )
+##
+##
+##    #The working values for various items.
+##    ocarina = [0x0000 + flag for flag in safe_flags]
+##    bow = [0x0100 + flag for flag in safe_flags]
+##    fire_arrow = [0x0200 + flag for flag in safe_flags]
+##    ice_arrow = [0x0300 + flag for flag in safe_flags]
+##    light_arrow = [0x0400 + flag for flag in safe_flags]
+##    fairy_ocarina_oot = [0x0500 + flag for flag in safe_flags]
+##    bomb = [0x0600 + flag for flag in safe_flags] #only gives 1 if you already have bomb bag
+##    bombchus = [0x0700 + flag for flag in safe_flags]
+##    stick = [0x0800 + flag for flag in safe_flags]
+##    nut = [0x0900 + flag for flag in safe_flags]
+##    bean = [0x0a00 + flag for flag in safe_flags]
+##    fairy_slingshot_oot = [0x0b00 + flag for flag in safe_flags]
+##    keg = [0x0c00 + flag for flag in safe_flags]
+##    pictobox = [0x0d00 + flag for flag in safe_flags]
+##    lens = [0x0e00 + flag for flag in safe_flags]
+##    hookshot = [0x0f00 + flag for flag in safe_flags]
+##    gf_sword = [0x1000 + flag for flag in safe_flags]
+##    longshot_oot = [0x1100 + flag for flag in safe_flags]
+##    bottle = [0x1200 + flag for flag in safe_flags]
+##    red_potion = [0x1300 + flag for flag in safe_flags]
+##    green_potion = [0x1400 + flag for flag in safe_flags]
+##    blue_potion = [0x1500 + flag for flag in safe_flags]
+##    fairy = [0x1600 + flag for flag in safe_flags]
+##    deku_princess = [0x1700 + flag for flag in safe_flags]
+##    milk = [0x1800 + flag for flag in safe_flags]
+##    half_milk = [0x1900 + flag for flag in safe_flags]
+##    fish = [0x1a00 + flag for flag in safe_flags]
+##    bug = [0x1b00 + flag for flag in safe_flags]
+##    blue_fire_oot = [0x1c00 + flag for flag in safe_flags]
+##    poe = [0x1d00 + flag for flag in safe_flags]
+##    big_poe = [0x1e00 + flag for flag in safe_flags]
+##    spring_water = [0x1f00 + flag for flag in safe_flags]
+##    hot_spring_water = [0x2000 + flag for flag in safe_flags]
+##    zora_egg = [0x2100 + flag for flag in safe_flags]
+##    gold_dust = [0x2200 + flag for flag in safe_flags]
+##    magic_mushroom = [0x2300 + flag for flag in safe_flags]
+##    sea_horse = [0x2400 + flag for flag in safe_flags]
+##    chateau_romani = [0x2500 + flag for flag in safe_flags]
+##    hylian_loach_beta = [0x2600 + flag for flag in safe_flags]
+##    obabas_drink_beta = [0x2700 + flag for flag in safe_flags]
+##    moons_tear = [0x2800 + flag for flag in safe_flags]
+##    land_title_deed = [0x2900 + flag for flag in safe_flags]
+##    swamp_title_deed = [0x2a00 + flag for flag in safe_flags]
+##    mountain_title_deed = [0x2b00 + flag for flag in safe_flags]
+##    ocean_title_deed = [0x2c00 + flag for flag in safe_flags]
+##    room_key = [0x2d00 + flag for flag in safe_flags]
+##    expressmail = [0x2e00 + flag for flag in safe_flags]
+##    letter = [0x2f00 + flag for flag in safe_flags]
+##    pendant = [0x3000 + flag for flag in safe_flags]
+##    tingles_map = [0x3100 + flag for flag in safe_flags]
+##    deku_mask = [0x3200 + flag for flag in safe_flags]
+##    goron_mask = [0x3300 + flag for flag in safe_flags]
+##    zora_mask = [0x3400 + flag for flag in safe_flags]
+##    fd_mask = [0x3500 + flag for flag in safe_flags]
+##    mask_of_truth = [0x3600 + flag for flag in safe_flags]
+##    kafeis_mask = [0x3700 + flag for flag in safe_flags]
+##    all_night_mask = [0x3800 + flag for flag in safe_flags]
+##    bunny_hood = [0x3900 + flag for flag in safe_flags]
+##    keaton_mask = [0x3a00 + flag for flag in safe_flags]
+##    garos_mask = [0x3b00 + flag for flag in safe_flags]
+##    romanis_mask = [0x3c00 + flag for flag in safe_flags]
+##    circus_leaders_mask = [0x3d00 + flag for flag in safe_flags]
+##    postmans_hat = [0x3e00 + flag for flag in safe_flags]
+##    couples_mask = [0x3f00 + flag for flag in safe_flags]
+##    gf_mask = [0x4000 + flag for flag in safe_flags]
+##    gibdo_mask = [0x4100 + flag for flag in safe_flags]
+##    don_geros_mask = [0x4200 + flag for flag in safe_flags]
+##    kamaros_mask = [0x4300 + flag for flag in safe_flags]
+##    captains_hat = [0x4400 + flag for flag in safe_flags]
+##    stone_mask = [0x4500 + flag for flag in safe_flags]
+##    bremen_mask = [0x4600 + flag for flag in safe_flags]
+##    blast_mask = [0x4700 + flag for flag in safe_flags]
+##    mask_of_scents = [0x4800 + flag for flag in safe_flags]
+##    giants_mask = [0x4900 + flag for flag in safe_flags]
+##    fire_bow = [0x4a00 + flag for flag in safe_flags]
+##    ice_bow = [0x4b00 + flag for flag in safe_flags]
+##    light_bow = [0x4c00 + flag for flag in safe_flags]
+##    kokiri_sword = [0x4d00 + flag for flag in safe_flags]
+##    razor_sword = [0x4e00 + flag for flag in safe_flags]
+##    gilded_sword = [0x4f00 + flag for flag in safe_flags]
+##    fd_sword = [0x5000 + flag for flag in safe_flags]
+##    heros_shield = [0x5100 + flag for flag in safe_flags]
+##    mirror_shield = [0x5200 + flag for flag in safe_flags]
+##    quiver = [0x5300 + flag for flag in safe_flags]
+##    large_quiver = [0x5400 + flag for flag in safe_flags]
+##    largest_quiver = [0x5500 + flag for flag in safe_flags]
+##    bomb_bag = [0x5600 + flag for flag in safe_flags]
+##    big_bomb_bag = [0x5700 + flag for flag in safe_flags]
+##    biggest_bomb_bag = [0x5800 + flag for flag in safe_flags]
+##    child_wallet_beta = [0x5900 + flag for flag in safe_flags]
+##    adult_wallet = [0x5a00 + flag for flag in safe_flags]
+##    giant_wallet = [0x5b00 + flag for flag in safe_flags]
+##    fishing_rod_oot = [0x5c00 + flag for flag in safe_flags]
+##    odolwas_remains = [0x5d00 + flag for flag in safe_flags]
+##    gohts_remains = [0x5e00 + flag for flag in safe_flags]
+##    gyorgs_remains = [0x5f00 + flag for flag in safe_flags]
+##    twinmolds_remains = [0x6000 + flag for flag in safe_flags]
+##    sonata = [0x6100 + flag for flag in safe_flags]
+##    lullaby = [0x6200 + flag for flag in safe_flags]
+##    nwbn = [0x6300 + flag for flag in safe_flags]
+##    elegy = [0x6400 + flag for flag in safe_flags]
+##    oath = [0x6500 + flag for flag in safe_flags]
+##    sarias_song = [0x6600 + flag for flag in safe_flags]
+##    song_of_time = [0x6700 + flag for flag in safe_flags]
+##    song_of_healing = [0x6800 + flag for flag in safe_flags]
+##    eponas_song = [0x6900 + flag for flag in safe_flags]
+##    song_of_soaring = [0x6a00 + flag for flag in safe_flags]
+##    song_of_storms = [0x6b00 + flag for flag in safe_flags]
+##    suns_song = [0x6c00 + flag for flag in safe_flags]
+##    bombers_notebook = [0x6d00 + flag for flag in safe_flags]
+##    gold_skulltula_token = [0x6e00 + flag for flag in safe_flags]
+##    heart_container = [0x6f00 + flag for flag in safe_flags]
+##    piece_of_heart = [0x700 + flag for flag in safe_flags]
+##    x40_bit_1ef72d = [0x7100 + flag for flag in safe_flags]
+##    x50_bit_1ef72d = [0x7200 + flag for flag in safe_flags]
+##    lullaby_intro = [0x7300 + flag for flag in safe_flags]
+##    boss_key = [0x7400 + flag for flag in safe_flags]
+##    compass = [0x7500 + flag for flag in safe_flags]
+##    dungeon_map = [0x7600 + flag for flag in safe_flags]
+##    stray_fairy = [0x7700 + flag for flag in safe_flags]
+##    small_key = [0x7800 + flag for flag in safe_flags]
+##    magic_jar = [0x7900 + flag for flag in safe_flags]
+##    magic_jar_2 = [0x7a00 + flag for flag in safe_flags]
+##    piece_of_heart_2 = [0x7b00 + flag for flag in safe_flags]
+##    glitched_ocarina_slot = [0x7c00 + flag for flag in safe_flags]
+##    glitched_third_bottle_slot = [0x7d00 + flag for flag in safe_flags]
+##    glitched_ocarina_slot_2 = [0x7e00 + flag for flag in safe_flags]
+##    glitched_ocarina_slot_3 = [0x7f00 + flag for flag in safe_flags]
+##    glitched_ocarina_slot_4 = [0x8000 + flag for flag in safe_flags]
+##    
+##
+##    # Desired collision angles. SET THIS TO ANY OF THE ABOVE ITEMS YOU WANT.
+##    cangs = song_of_soaring
+##
+##
+##    # Walls available to collide with.    
+##    walls = list(cardinals_dict)
+##
+##
+##    # Convert the list of working collision angles into movement angles, since
+##    # this script is designed to find *movement* angle setups.
+##    movement_angles=[]
+##    for wall in walls:
+##        movement_angles.extend([(abs(wall+cang) % 0x8000) for cang in cangs])
+##        
+##    # Remove duplicates.
+##    movement_angles = list( dict.fromkeys(movement_angles) )
+##
+##
+##    #Movement angles for US 1.0 Collision angles.  COMMENT THIS LINE IF NOT LOOKING FOR COLLISION ANGLE.
+##    for angle in movement_angles:
     
 
     
     # Collect the 5 fastest sequences of the first 50 visited.  The fastest
     # sequence collected is at least tied as the fastest sequence overall.
-        paths.extend(collect_paths(graph, angle, sample_size=10, number=1))
+        paths.extend(collect_paths(graph, angle, sample_size=1000, number=6))
     # Results seem to be better with an unlimited sample_size, but everything after the 6th
     # result is invalid with a COST_FLEX of 8. Any higher COST_FLEX increases processing time
     # dramatically, so we have to limit the number of results to 6. It still seems to miss some
