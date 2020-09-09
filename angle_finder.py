@@ -501,11 +501,11 @@ def initialize_cost_table():
 
 
 ALLOWED_GROUPS = [
-##     "basic",
+     "basic",
 ##     "target & cardinals available",
 ##     "c-up",
 ##     "first person item horizontal",
-     "first person item vertical",
+##     "first person item vertical",
 ##     "deku",
 ##     "jp transformation",
 ##     "us transformation, target & cardinals available",
@@ -532,20 +532,23 @@ if __name__ == "__main__":
 ##        "j1 targeting",
 ##        "u0 targeting",
 ##        "timestop",
+        "woods walls",
+        "woods tree",
         ]
 
     cardinals_dict = {
         0x0000: "Southern wall (entrance to tunnel, observatory door)",
-#        0x4000: "Eastern wall (tunnel, starpost by observatory door)",
-#        0x8000: "Northern wall (double boxes, yellow stair flight, couch)",
-#        0xc000: "Western wall (tunnel, starpost by observatory door)",
+        0x4000: "Eastern wall (tunnel, starpost by observatory door)",
+        0x8000: "Northern wall (double boxes, yellow stair flight, couch)",
+        0xc000: "Western wall (tunnel, starpost by observatory door)",
 #        0x0a64: "Pot Drop Angle",
+#        0x00fb: "Right fin starting angle."
         }
         
     downstairs_dict = {
         0x54d1: "SW face of vase",
         0x1526: "NW face of vase",
-        0xd4d1: "NE face of face",
+        0xd4d1: "NE face of vase",
         0x2aac: "SE downstairs wall",
         0x5554: "NE downstairs wall (cyan stair flight)",
         0xd563: "Cyan staircase railing",
@@ -781,6 +784,41 @@ if __name__ == "__main__":
         0xbddf: "Tap down (with 3DDF timestop angle)",
         0xfddf: "Tap right (with 3DDF timestop angle)",
         }
+
+    woods_walls_dict = {
+        0x1e0b: "Southeast corner, wall 1/4 from Eastern tunnel.",
+        0x2bdb: "Southeast corner, wall 2/4 from Eastern tunnel.",
+        0x1425: "Southeast corner, wall 3/4 from Eastern tunnel.",
+        0x21f5: "Southeast corner, wall 4/4 from Eastern tunnel.",
+        0xe7e5: "Southwest corner, wall 1/4 from Southern tunnel.",
+        0xea8e: "Southwest corner, wall 2/4 from Southern tunnel.",
+        0xd572: "Southwest corner, wall 3/4 from Southern tunnel.",
+        0xd81b: "Southwest corner, wall 4/4 from Southern tunnel.",
+        0x9e0b: "Northwest corner, wall 1/4 from Western tunnel.",
+        0xabdb: "Northwest corner, wall 2/4 from Western tunnel.",
+        0x9425: "Northwest corner, wall 3/4 from Western tunnel.",
+        0xa1f5: "Northwest corner, wall 4/4 from Western tunnel.",
+        0x67e5: "Northeast corner, wall 1/4 from Northern tunnel.",
+        0x6a8e: "Northeast corner, wall 2/4 from Northern tunnel.",
+        0x5572: "Northeast corner, wall 3/4 from Northern tunnel.",
+        0x581b: "Northeast corner, wall 4/4 from Northern tunnel.",
+        }
+    
+    woods_tree_dict = {
+        0xe39c: "Eastern corner, far root.",
+        0xc3b1: "Eastern corner, tree trunk.",
+        0xb216: "Eastern corner, close root.",
+        0xef66: "Northern corner, Eastern trunk.",
+        0xff3e: "Northern corner, Western trunk.",
+        0x4ed4: "Western corner, Northern root.",
+        0x39f5: "Western corner, tree trunk.",
+        0x2f10: "Western corner, Southern root.",
+        0x7d6b: "Eastern corner, close root.",
+        0x6acb: "Eastern corner, close tree trunk.",
+        0x85a7: "Eastern corner, middle tree trunk.",
+        0x8d99: "Eastern corner, far tree trunk.",
+        0x8374: "Eastern corner, far root.",
+        }
     
     starting_angles_switcher = {
         "cardinals": cardinals_dict,
@@ -792,6 +830,8 @@ if __name__ == "__main__":
         "j1 targeting": j1_targeting_dict,
         "u0 targeting": u0_targeting_dict,
         "timestop": timestop_dict,
+        "woods walls": woods_walls_dict,
+        "woods tree": woods_tree_dict,
         }
         
     starting_angles_dict = {
@@ -811,8 +851,8 @@ if __name__ == "__main__":
 
     # Uncomment one of the link_addr lines based on your desired version.
     #link_addr=0x3fffa0 #JP 1.0 
-    #link_addr=0x400260 #JP 1.1
-    link_addr=0x3ffdb0 #US
+    link_addr=0x400260 #JP 1.1
+    #link_addr=0x3ffdb0 #US
 
     # Stale reference drop angles (at most 12 words prior to Link + 0xAD4)
     combo_angle = (link_addr + 0xAD4) % 0x10000
@@ -825,7 +865,7 @@ if __name__ == "__main__":
 
 
     # Stale Reference Drop Angle (all versions)
-    #for angle in list(range(earliest, combo_angle+1, 4)):
+    for angle in list(range(earliest, combo_angle+1, 4)):
 
 
 
@@ -882,10 +922,26 @@ if __name__ == "__main__":
     #for angle in [0x0807]:
 
     # Facing angle (heap copy)
-    for angle in [0x0814]:
+    #for angle in [0x0814]:
 
     # All facing angles
     #for angle in [0x0807, 0x0814]:
+
+
+    #JP 1.0 Moonwarp Vertical Angles
+    #for angle in [0x0810, 0x0814]:
+
+    #JP 1.0 Moonwarp Horizontal Angles
+    #for angle in [0x3BB1, 0x3BB2, 0x3AEE, 0x3AEF]:#, 0x2CA3]:
+    #for angle in [0x5CA1, 0x5CA2, 0x5BDE, 0x5BDF]:
+    #for angle in [0x5CA1-0x190, 0x5CA1+0x190, 0x5CA2-0x190, 0x5CA2+0x190]:#, 0x5BDE-0x190, 0x5BDE+0x190, 0x5BDF-0x190, 0x5BDF+0x190]:
+    #for angle in [0xFB, 0xFC, 0xA4, 0xA5]:
+    #for angle in [0x5b11]:
+
+
+
+
+
 
 
     # US 1.0 FD MASK ANGLES
